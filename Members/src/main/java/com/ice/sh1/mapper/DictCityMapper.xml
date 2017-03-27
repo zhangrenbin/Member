@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ice.sh1.dao.DictCityMapper" >
+  <resultMap id="BaseResultMap" type="com.ice.sh1.po.DictCity" >
+    <id column="N_CITYID" property="nCityid" jdbcType="INTEGER" />
+    <result column="S_CITYNAME" property="sCityname" jdbcType="VARCHAR" />
+    <result column="N_PROVID" property="nProvid" jdbcType="INTEGER" />
+    <result column="S_STATE" property="sState" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    N_CITYID, S_CITYNAME, N_PROVID, S_STATE
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ice.sh1.po.DictCityExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from dict_city
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from dict_city
+    where N_CITYID = #{nCityid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dict_city
+    where N_CITYID = #{nCityid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ice.sh1.po.DictCityExample" >
+    delete from dict_city
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ice.sh1.po.DictCity" keyProperty="id" useGeneratedKeys="true">
+    insert into dict_city (N_CITYID, S_CITYNAME, N_PROVID, 
+      S_STATE)
+    values (#{nCityid,jdbcType=INTEGER}, #{sCityname,jdbcType=VARCHAR}, #{nProvid,jdbcType=INTEGER}, 
+      #{sState,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ice.sh1.po.DictCity" keyProperty="id" useGeneratedKeys="true">
+    insert into dict_city
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="nCityid != null" >
+        N_CITYID,
+      </if>
+      <if test="sCityname != null" >
+        S_CITYNAME,
+      </if>
+      <if test="nProvid != null" >
+        N_PROVID,
+      </if>
+      <if test="sState != null" >
+        S_STATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="nCityid != null" >
+        #{nCityid,jdbcType=INTEGER},
+      </if>
+      <if test="sCityname != null" >
+        #{sCityname,jdbcType=VARCHAR},
+      </if>
+      <if test="nProvid != null" >
+        #{nProvid,jdbcType=INTEGER},
+      </if>
+      <if test="sState != null" >
+        #{sState,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ice.sh1.po.DictCityExample" resultType="java.lang.Integer" >
+    select count(*) from dict_city
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update dict_city
+    <set >
+      <if test="record.nCityid != null" >
+        N_CITYID = #{record.nCityid,jdbcType=INTEGER},
+      </if>
+      <if test="record.sCityname != null" >
+        S_CITYNAME = #{record.sCityname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nProvid != null" >
+        N_PROVID = #{record.nProvid,jdbcType=INTEGER},
+      </if>
+      <if test="record.sState != null" >
+        S_STATE = #{record.sState,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update dict_city
+    set N_CITYID = #{record.nCityid,jdbcType=INTEGER},
+      S_CITYNAME = #{record.sCityname,jdbcType=VARCHAR},
+      N_PROVID = #{record.nProvid,jdbcType=INTEGER},
+      S_STATE = #{record.sState,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ice.sh1.po.DictCity" >
+    update dict_city
+    <set >
+      <if test="sCityname != null" >
+        S_CITYNAME = #{sCityname,jdbcType=VARCHAR},
+      </if>
+      <if test="nProvid != null" >
+        N_PROVID = #{nProvid,jdbcType=INTEGER},
+      </if>
+      <if test="sState != null" >
+        S_STATE = #{sState,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where N_CITYID = #{nCityid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ice.sh1.po.DictCity" >
+    update dict_city
+    set S_CITYNAME = #{sCityname,jdbcType=VARCHAR},
+      N_PROVID = #{nProvid,jdbcType=INTEGER},
+      S_STATE = #{sState,jdbcType=VARCHAR}
+    where N_CITYID = #{nCityid,jdbcType=INTEGER}
+  </update>
+</mapper>

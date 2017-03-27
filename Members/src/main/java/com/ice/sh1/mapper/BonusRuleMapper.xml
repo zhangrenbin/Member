@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ice.sh1.dao.BonusRuleMapper" >
+  <resultMap id="BaseResultMap" type="com.ice.sh1.po.BonusRule" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="r_name" property="rName" jdbcType="VARCHAR" />
+    <result column="r_desc" property="rDesc" jdbcType="VARCHAR" />
+    <result column="r_enable" property="rEnable" jdbcType="INTEGER" />
+    <result column="r_class" property="rClass" jdbcType="VARCHAR" />
+    <result column="r_bonus" property="rBonus" jdbcType="REAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, r_name, r_desc, r_enable, r_class, r_bonus
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ice.sh1.po.BonusRuleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_bonus_rule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_bonus_rule
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_bonus_rule
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ice.sh1.po.BonusRuleExample" >
+    delete from t_bonus_rule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ice.sh1.po.BonusRule" keyProperty="id" useGeneratedKeys="true">
+    insert into t_bonus_rule (id, r_name, r_desc, 
+      r_enable, r_class, r_bonus
+      )
+    values (#{id,jdbcType=INTEGER}, #{rName,jdbcType=VARCHAR}, #{rDesc,jdbcType=VARCHAR}, 
+      #{rEnable,jdbcType=INTEGER}, #{rClass,jdbcType=VARCHAR}, #{rBonus,jdbcType=REAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ice.sh1.po.BonusRule" keyProperty="id" useGeneratedKeys="true">
+    insert into t_bonus_rule
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="rName != null" >
+        r_name,
+      </if>
+      <if test="rDesc != null" >
+        r_desc,
+      </if>
+      <if test="rEnable != null" >
+        r_enable,
+      </if>
+      <if test="rClass != null" >
+        r_class,
+      </if>
+      <if test="rBonus != null" >
+        r_bonus,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="rName != null" >
+        #{rName,jdbcType=VARCHAR},
+      </if>
+      <if test="rDesc != null" >
+        #{rDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="rEnable != null" >
+        #{rEnable,jdbcType=INTEGER},
+      </if>
+      <if test="rClass != null" >
+        #{rClass,jdbcType=VARCHAR},
+      </if>
+      <if test="rBonus != null" >
+        #{rBonus,jdbcType=REAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ice.sh1.po.BonusRuleExample" resultType="java.lang.Integer" >
+    select count(*) from t_bonus_rule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_bonus_rule
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.rName != null" >
+        r_name = #{record.rName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rDesc != null" >
+        r_desc = #{record.rDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rEnable != null" >
+        r_enable = #{record.rEnable,jdbcType=INTEGER},
+      </if>
+      <if test="record.rClass != null" >
+        r_class = #{record.rClass,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rBonus != null" >
+        r_bonus = #{record.rBonus,jdbcType=REAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_bonus_rule
+    set id = #{record.id,jdbcType=INTEGER},
+      r_name = #{record.rName,jdbcType=VARCHAR},
+      r_desc = #{record.rDesc,jdbcType=VARCHAR},
+      r_enable = #{record.rEnable,jdbcType=INTEGER},
+      r_class = #{record.rClass,jdbcType=VARCHAR},
+      r_bonus = #{record.rBonus,jdbcType=REAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ice.sh1.po.BonusRule" >
+    update t_bonus_rule
+    <set >
+      <if test="rName != null" >
+        r_name = #{rName,jdbcType=VARCHAR},
+      </if>
+      <if test="rDesc != null" >
+        r_desc = #{rDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="rEnable != null" >
+        r_enable = #{rEnable,jdbcType=INTEGER},
+      </if>
+      <if test="rClass != null" >
+        r_class = #{rClass,jdbcType=VARCHAR},
+      </if>
+      <if test="rBonus != null" >
+        r_bonus = #{rBonus,jdbcType=REAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ice.sh1.po.BonusRule" >
+    update t_bonus_rule
+    set r_name = #{rName,jdbcType=VARCHAR},
+      r_desc = #{rDesc,jdbcType=VARCHAR},
+      r_enable = #{rEnable,jdbcType=INTEGER},
+      r_class = #{rClass,jdbcType=VARCHAR},
+      r_bonus = #{rBonus,jdbcType=REAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

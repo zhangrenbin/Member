@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ice.sh1.dao.MembTreeMapper" >
+  <resultMap id="BaseResultMap" type="com.ice.sh1.po.MembTree" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="memb_id" property="membId" jdbcType="INTEGER" />
+    <result column="p_id" property="pId" jdbcType="INTEGER" />
+    <result column="pos" property="pos" jdbcType="VARCHAR" />
+    <result column="membAccount" property="membAccount" jdbcType="VARCHAR" />
+    <result column="membName" property="membName" jdbcType="VARCHAR" />
+    <result column="recommer" property="recommer" jdbcType="INTEGER" />
+    <result column="recommerName" property="recommerName" jdbcType="VARCHAR" />
+    <result column="recommerAccount" property="recommerAccount" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List">
+  	t.id,t.memb_id,t.p_id,t.pos,m.m_account membAccount, m.m_cnname membName,m.m_recommder recommer,
+  	rm.m_account recommerAccount,rm.m_cnname recommerName
+  </sql>
+  <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_memb_tree t join t_member m on t.memb_id=m.id 
+     join t_member rm on m.m_recommder=rm.id
+    where t.id = #{id,jdbcType=INTEGER} 
+  </select>
+  <select id="getByMembId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_memb_tree t join t_member m on t.memb_id=m.id 
+     join t_member rm on m.m_recommder=rm.id
+    where t.memb_id = #{id,jdbcType=INTEGER} 
+  </select>
+  <select id="getByPId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_memb_tree t join t_member m on t.memb_id=m.id 
+     join t_member rm on m.m_recommder=rm.id
+    where t.p_id = #{id,jdbcType=INTEGER} 
+  </select>
+  <delete id="deleteById" parameterType="java.lang.Integer" >
+    delete from t_memb_tree
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.ice.sh1.po.MembTree" keyProperty="id" useGeneratedKeys="true">
+    insert into t_memb_tree
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="membId != null" >
+        memb_id,
+      </if>
+      <if test="pId != null" >
+        p_id,
+      </if>
+      <if test="pos != null" >
+        pos,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="membId != null" >
+        #{membId,jdbcType=INTEGER},
+      </if>
+      <if test="pId != null" >
+        #{pId,jdbcType=INTEGER},
+      </if>
+      <if test="pos != null" >
+        #{pos,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

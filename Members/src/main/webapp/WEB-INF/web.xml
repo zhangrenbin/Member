@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<display-name>members</display-name>
+	<session-config>
+		<session-timeout>1</session-timeout>
+	</session-config>
+	<welcome-file-list>
+		<welcome-file>jsp/main.jsp</welcome-file>
+	</welcome-file-list>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>com.ice.sh1.ForInitListener</listener-class>
+	</listener>
+	<!-- 指定Spring Bean的配置文件所在目录。默认配置在WEB-INF目录下 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>WEB-INF/conf/applicationContext*.xml</param-value>
+	</context-param>
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>utf-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>crossFilter</filter-name>
+		<filter-class>com.ice.sh1.CrossDomainFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>crossFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>crossFilter</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	<!-- 单点登录filter//开始 -->
+	<filter>
+		<filter-name>ssoLoginClientFilter</filter-name>
+		<filter-class>com.inpsur.sso.client.SsoLoginClientFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ssoLoginClientFilter</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>ssoLoginClientFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>ssoLogoutClientFilter</filter-name>
+		<filter-class>com.inpsur.sso.client.SsoLogoutClientFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ssoLogoutClientFilter</filter-name>
+		<url-pattern>/logout.do</url-pattern>
+	</filter-mapping>
+	<!-- 单点登录filter//结束 -->
+	<!-- 鉴权filter 开始 -->
+	<filter>
+		<filter-name>guarderClientFilter</filter-name>
+		<filter-class>com.inspur.guarder.client.GuarderClientFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>guarderClientFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>guarderClientFilter</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	<!-- 鉴权filter 结束 -->
+	<filter>
+		<filter-name>afterLoginFilter</filter-name>
+		<filter-class>com.ice.sh1.AfterLoginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>afterLoginFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
+	<servlet>
+		<servlet-name>spring</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<!-- 可以自定义servlet.xml配置文件的位置和名称，默认为WEB-INF目录下，名称为[<servlet-name>]-servlet.xml，如spring-servlet.xml    -->   
+		<!-- 
+		<init-param>        
+		 	<param-name>contextConfigLocation</param-name>    
+		    <param-value>/WEB-INF/spring-servlet.xml</param-value>  
+		</init-param>  
+		 -->  
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>     
+		<servlet-name>spring</servlet-name>    
+		<url-pattern>*.do</url-pattern> 
+	</servlet-mapping>
+</web-app>

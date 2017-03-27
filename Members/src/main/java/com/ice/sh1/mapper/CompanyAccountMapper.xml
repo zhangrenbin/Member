@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ice.sh1.dao.CompanyAccountMapper" >
+  <resultMap id="BaseResultMap" type="com.ice.sh1.po.CompanyAccount" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="b_account" property="bAccount" jdbcType="VARCHAR" />
+    <result column="b_name" property="bName" jdbcType="VARCHAR" />
+    <result column="b_bank" property="bBank" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, b_account, b_name, b_bank
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ice.sh1.po.CompanyAccountExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_company_b
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_company_b
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_company_b
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ice.sh1.po.CompanyAccountExample" >
+    delete from t_company_b
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ice.sh1.po.CompanyAccount" keyProperty="id" useGeneratedKeys="true">
+    insert into t_company_b (id, b_account, b_name, 
+      b_bank)
+    values (#{id,jdbcType=INTEGER}, #{bAccount,jdbcType=VARCHAR}, #{bName,jdbcType=VARCHAR}, 
+      #{bBank,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ice.sh1.po.CompanyAccount" keyProperty="id" useGeneratedKeys="true">
+    insert into t_company_b
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="bAccount != null" >
+        b_account,
+      </if>
+      <if test="bName != null" >
+        b_name,
+      </if>
+      <if test="bBank != null" >
+        b_bank,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bAccount != null" >
+        #{bAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="bName != null" >
+        #{bName,jdbcType=VARCHAR},
+      </if>
+      <if test="bBank != null" >
+        #{bBank,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ice.sh1.po.CompanyAccountExample" resultType="java.lang.Integer" >
+    select count(*) from t_company_b
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_company_b
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.bAccount != null" >
+        b_account = #{record.bAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bName != null" >
+        b_name = #{record.bName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bBank != null" >
+        b_bank = #{record.bBank,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_company_b
+    set id = #{record.id,jdbcType=INTEGER},
+      b_account = #{record.bAccount,jdbcType=VARCHAR},
+      b_name = #{record.bName,jdbcType=VARCHAR},
+      b_bank = #{record.bBank,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ice.sh1.po.CompanyAccount" >
+    update t_company_b
+    <set >
+      <if test="bAccount != null" >
+        b_account = #{bAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="bName != null" >
+        b_name = #{bName,jdbcType=VARCHAR},
+      </if>
+      <if test="bBank != null" >
+        b_bank = #{bBank,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ice.sh1.po.CompanyAccount" >
+    update t_company_b
+    set b_account = #{bAccount,jdbcType=VARCHAR},
+      b_name = #{bName,jdbcType=VARCHAR},
+      b_bank = #{bBank,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

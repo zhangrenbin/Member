@@ -1,0 +1,16 @@
+<taglib>
+  <tlib-version>1.0</tlib-version>
+  <jsp-version>2.0</jsp-version>
+  <short-name>AuthLD</short-name>
+  <uri>/authtaglib</uri>
+  <tag>
+    <name>auth</name>
+    <tag-class>com.inspur.guarder.client.AuthTag</tag-class>
+    <body-content>scriptless</body-content>
+    <attribute>
+        <name>funccode</name>
+         <required>true</required>
+         <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+</taglib>

@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ice.sh1.dao.MemberMapper" >
+  <resultMap id="BaseResultMap" type="com.ice.sh1.po.Member" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="m_account" property="mAccount" jdbcType="VARCHAR" />
+    <result column="m_cnname" property="mCnname" jdbcType="VARCHAR" />
+    <result column="m_idnum" property="mIdnum" jdbcType="VARCHAR" />
+    <result column="m_mobile" property="mMobile" jdbcType="VARCHAR" />
+    <result column="m_password" property="mPassword" jdbcType="VARCHAR" />
+    <result column="m_password2" property="mPassword2" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="INTEGER" />
+    <result column="m_addr" property="mAddr" jdbcType="VARCHAR" />
+    <result column="m_province" property="mProvince" jdbcType="INTEGER" />
+    <result column="m_city" property="mCity" jdbcType="INTEGER" />
+    <result column="m_bank" property="mBank" jdbcType="VARCHAR" />
+    <result column="m_b_account" property="mBAccount" jdbcType="VARCHAR" />
+    <result column="m_b_name" property="mBName" jdbcType="VARCHAR" />
+    <result column="m_recommder" property="mRecommder" jdbcType="INTEGER" />
+    <result column="m_regdate" property="mRegdate" jdbcType="TIMESTAMP" />
+    <result column="m_activedate" property="mActivedate" jdbcType="TIMESTAMP" />
+    <result column="m_balance" property="mBalance" jdbcType="REAL" />
+    <result column="m_total" property="mTotal" jdbcType="REAL" />
+    <result column="m_active" property="mActive" jdbcType="INTEGER" />
+    <result column="mRecommderName" property="mRecommderName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, m_account, m_cnname, m_idnum, m_mobile, m_password, m_password2, level, m_addr, 
+    m_province, m_city, m_bank, m_b_account, m_b_name, m_recommder, m_regdate, m_activedate, 
+    m_balance, m_total,m_active
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ice.sh1.po.MemberExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,(select m_cnname from t_member t2 where t2.id=t_member.m_recommder) mRecommderName
+    from t_member
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="start != null">
+    	limit ${start}, ${size}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,(select m_cnname from t_member t2 where t2.id=t_member.m_recommder) mRecommderName
+    from t_member
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_member
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ice.sh1.po.MemberExample" >
+    delete from t_member
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ice.sh1.po.Member" keyProperty="id" useGeneratedKeys="true">
+    insert into t_member (id, m_account, m_cnname, 
+      m_idnum, m_mobile, m_password, 
+      m_password2, level, m_addr, 
+      m_province, m_city, m_bank, 
+      m_b_account, m_b_name, m_recommder, 
+      m_regdate, m_activedate, m_balance, 
+      m_total,m_active)
+    values (#{id,jdbcType=INTEGER}, #{mAccount,jdbcType=VARCHAR}, #{mCnname,jdbcType=VARCHAR}, 
+      #{mIdnum,jdbcType=VARCHAR}, #{mMobile,jdbcType=VARCHAR}, #{mPassword,jdbcType=VARCHAR}, 
+      #{mPassword2,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER}, #{mAddr,jdbcType=VARCHAR}, 
+      #{mProvince,jdbcType=INTEGER}, #{mCity,jdbcType=INTEGER}, #{mBank,jdbcType=VARCHAR}, 
+      #{mBAccount,jdbcType=VARCHAR}, #{mBName,jdbcType=VARCHAR}, #{mRecommder,jdbcType=INTEGER}, 
+      #{mRegdate,jdbcType=TIMESTAMP}, #{mActivedate,jdbcType=TIMESTAMP}, #{mBalance,jdbcType=REAL}, 
+      #{mTotal,jdbcType=REAL},#{mActive,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ice.sh1.po.Member" keyProperty="id" useGeneratedKeys="true">
+    insert into t_member
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="mAccount != null" >
+        m_account,
+      </if>
+      <if test="mCnname != null" >
+        m_cnname,
+      </if>
+      <if test="mIdnum != null" >
+        m_idnum,
+      </if>
+      <if test="mMobile != null" >
+        m_mobile,
+      </if>
+      <if test="mPassword != null" >
+        m_password,
+      </if>
+      <if test="mPassword2 != null" >
+        m_password2,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="mAddr != null" >
+        m_addr,
+      </if>
+      <if test="mProvince != null" >
+        m_province,
+      </if>
+      <if test="mCity != null" >
+        m_city,
+      </if>
+      <if test="mBank != null" >
+        m_bank,
+      </if>
+      <if test="mBAccount != null" >
+        m_b_account,
+      </if>
+      <if test="mBName != null" >
+        m_b_name,
+      </if>
+      <if test="mRecommder != null" >
+        m_recommder,
+      </if>
+      <if test="mRegdate != null" >
+        m_regdate,
+      </if>
+      <if test="mActivedate != null" >
+        m_activedate,
+      </if>
+      <if test="mBalance != null" >
+        m_balance,
+      </if>
+      <if test="mTotal != null" >
+        m_total,
+      </if>
+      <if test="mActive != null" >
+        m_active,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="mAccount != null" >
+        #{mAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="mCnname != null" >
+        #{mCnname,jdbcType=VARCHAR},
+      </if>
+      <if test="mIdnum != null" >
+        #{mIdnum,jdbcType=VARCHAR},
+      </if>
+      <if test="mMobile != null" >
+        #{mMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="mPassword != null" >
+        #{mPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="mPassword2 != null" >
+        #{mPassword2,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="mAddr != null" >
+        #{mAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="mProvince != null" >
+        #{mProvince,jdbcType=INTEGER},
+      </if>
+      <if test="mCity != null" >
+        #{mCity,jdbcType=INTEGER},
+      </if>
+      <if test="mBank != null" >
+        #{mBank,jdbcType=VARCHAR},
+      </if>
+      <if test="mBAccount != null" >
+        #{mBAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="mBName != null" >
+        #{mBName,jdbcType=VARCHAR},
+      </if>
+      <if test="mRecommder != null" >
+        #{mRecommder,jdbcType=INTEGER},
+      </if>
+      <if test="mRegdate != null" >
+        #{mRegdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mActivedate != null" >
+        #{mActivedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mBalance != null" >
+        #{mBalance,jdbcType=REAL},
+      </if>
+      <if test="mTotal != null" >
+        #{mTotal,jdbcType=REAL},
+      </if>
+      <if test="mActive != null" >
+        #{mActive,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ice.sh1.po.MemberExample" resultType="java.lang.Integer" >
+    select count(*) from t_member
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_member
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.mAccount != null" >
+        m_account = #{record.mAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mCnname != null" >
+        m_cnname = #{record.mCnname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mIdnum != null" >
+        m_idnum = #{record.mIdnum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mMobile != null" >
+        m_mobile = #{record.mMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mPassword != null" >
+        m_password = #{record.mPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mPassword2 != null" >
+        m_password2 = #{record.mPassword2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.level != null" >
+        level = #{record.level,jdbcType=INTEGER},
+      </if>
+      <if test="record.mAddr != null" >
+        m_addr = #{record.mAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mProvince != null" >
+        m_province = #{record.mProvince,jdbcType=INTEGER},
+      </if>
+      <if test="record.mCity != null" >
+        m_city = #{record.mCity,jdbcType=INTEGER},
+      </if>
+      <if test="record.mBank != null" >
+        m_bank = #{record.mBank,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mBAccount != null" >
+        m_b_account = #{record.mBAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mBName != null" >
+        m_b_name = #{record.mBName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mRecommder != null" >
+        m_recommder = #{record.mRecommder,jdbcType=INTEGER},
+      </if>
+      <if test="record.mRegdate != null" >
+        m_regdate = #{record.mRegdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mActivedate != null" >
+        m_activedate = #{record.mActivedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mBalance != null" >
+        m_balance = #{record.mBalance,jdbcType=REAL},
+      </if>
+      <if test="record.mTotal != null" >
+        m_total = #{record.mTotal,jdbcType=REAL},
+      </if>
+      <if test="record.mActive != null" >
+        m_active = #{record.mActive,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_member
+    set id = #{record.id,jdbcType=INTEGER},
+      m_account = #{record.mAccount,jdbcType=VARCHAR},
+      m_cnname = #{record.mCnname,jdbcType=VARCHAR},
+      m_idnum = #{record.mIdnum,jdbcType=VARCHAR},
+      m_mobile = #{record.mMobile,jdbcType=VARCHAR},
+      m_password = #{record.mPassword,jdbcType=VARCHAR},
+      m_password2 = #{record.mPassword2,jdbcType=VARCHAR},
+      level = #{record.level,jdbcType=INTEGER},
+      m_addr = #{record.mAddr,jdbcType=VARCHAR},
+      m_province = #{record.mProvince,jdbcType=INTEGER},
+      m_city = #{record.mCity,jdbcType=INTEGER},
+      m_bank = #{record.mBank,jdbcType=VARCHAR},
+      m_b_account = #{record.mBAccount,jdbcType=VARCHAR},
+      m_b_name = #{record.mBName,jdbcType=VARCHAR},
+      m_recommder = #{record.mRecommder,jdbcType=INTEGER},
+      m_regdate = #{record.mRegdate,jdbcType=TIMESTAMP},
+      m_activedate = #{record.mActivedate,jdbcType=TIMESTAMP},
+      m_balance = #{record.mBalance,jdbcType=REAL},
+      m_total = #{record.mTotal,jdbcType=REAL},
+      m_active = #{record.mActive,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ice.sh1.po.Member" >
+    update t_member
+    <set >
+      <if test="mAccount != null" >
+        m_account = #{mAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="mCnname != null" >
+        m_cnname = #{mCnname,jdbcType=VARCHAR},
+      </if>
+      <if test="mIdnum != null" >
+        m_idnum = #{mIdnum,jdbcType=VARCHAR},
+      </if>
+      <if test="mMobile != null" >
+        m_mobile = #{mMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="mPassword != null" >
+        m_password = #{mPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="mPassword2 != null" >
+        m_password2 = #{mPassword2,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="mAddr != null" >
+        m_addr = #{mAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="mProvince != null" >
+        m_province = #{mProvince,jdbcType=INTEGER},
+      </if>
+      <if test="mCity != null" >
+        m_city = #{mCity,jdbcType=INTEGER},
+      </if>
+      <if test="mBank != null" >
+        m_bank = #{mBank,jdbcType=VARCHAR},
+      </if>
+      <if test="mBAccount != null" >
+        m_b_account = #{mBAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="mBName != null" >
+        m_b_name = #{mBName,jdbcType=VARCHAR},
+      </if>
+      <if test="mRecommder != null" >
+        m_recommder = #{mRecommder,jdbcType=INTEGER},
+      </if>
+      <if test="mRegdate != null" >
+        m_regdate = #{mRegdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mActivedate != null" >
+        m_activedate = #{mActivedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mBalance != null" >
+        m_balance = #{mBalance,jdbcType=REAL},
+      </if>
+      <if test="mTotal != null" >
+        m_total = #{mTotal,jdbcType=REAL},
+      </if>
+      <if test="mActive != null" >
+        m_active = #{mActive,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ice.sh1.po.Member" >
+    update t_member
+    set m_account = #{mAccount,jdbcType=VARCHAR},
+      m_cnname = #{mCnname,jdbcType=VARCHAR},
+      m_idnum = #{mIdnum,jdbcType=VARCHAR},
+      m_mobile = #{mMobile,jdbcType=VARCHAR},
+      m_password = #{mPassword,jdbcType=VARCHAR},
+      m_password2 = #{mPassword2,jdbcType=VARCHAR},
+      level = #{level,jdbcType=INTEGER},
+      m_addr = #{mAddr,jdbcType=VARCHAR},
+      m_province = #{mProvince,jdbcType=INTEGER},
+      m_city = #{mCity,jdbcType=INTEGER},
+      m_bank = #{mBank,jdbcType=VARCHAR},
+      m_b_account = #{mBAccount,jdbcType=VARCHAR},
+      m_b_name = #{mBName,jdbcType=VARCHAR},
+      m_recommder = #{mRecommder,jdbcType=INTEGER},
+      m_regdate = #{mRegdate,jdbcType=TIMESTAMP},
+      m_activedate = #{mActivedate,jdbcType=TIMESTAMP},
+      m_balance = #{mBalance,jdbcType=REAL},
+      m_total = #{mTotal,jdbcType=REAL},
+      m_active = #{mActive,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="addTotalAndBalance">
+    update t_member
+    set m_total = m_total + #{1},
+      m_balance = m_balance + #{1}
+    where id = #{0}
+  </update>
+  <update id="addDecBalance">
+    update t_member
+    set m_balance = m_balance - #{1}
+    where id = #{0}
+  </update>
+</mapper>

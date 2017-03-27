@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ice.sh1.dao.BonusRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.ice.sh1.po.BonusRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="r_member" property="rMember" jdbcType="INTEGER" />
+    <result column="r_money" property="rMoney" jdbcType="REAL" />
+    <result column="r_point" property="rPoint" jdbcType="VARCHAR" />
+    <result column="r_time" property="rTime" jdbcType="TIMESTAMP" />
+    <result column="r_addup" property="rAddup" jdbcType="INTEGER" />
+    <result column="r_rule" property="rRule" jdbcType="INTEGER" />
+    <result column="r_desc" property="rDesc" jdbcType="VARCHAR" />
+    <result column="membAccount" property="membAccount" jdbcType="VARCHAR" />
+    <result column="membName" property="membName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and t.${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and t.${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and t.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and t.${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    t.id, r_member, r_money, r_point, r_time, r_addup, r_rule, r_desc,m.m_account membAccount,m.m_cnname membName
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ice.sh1.po.BonusRecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_bonus_record t join t_member m on t.r_member=m.id
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="start != null">
+    	limit ${start}, ${size}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_bonus_record t join t_member m on t.r_member=m.id
+    where t.id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_bonus_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ice.sh1.po.BonusRecordExample" >
+    delete from t_bonus_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ice.sh1.po.BonusRecord" useGeneratedKeys="true" keyProperty="id">
+    insert into t_bonus_record (id, r_member, r_money, 
+      r_point, r_time, r_addup, 
+      r_rule, r_desc)
+    values (#{id,jdbcType=INTEGER}, #{rMember,jdbcType=INTEGER}, #{rMoney,jdbcType=REAL}, 
+      #{rPoint,jdbcType=VARCHAR}, #{rTime,jdbcType=TIMESTAMP}, #{rAddup,jdbcType=INTEGER}, 
+      #{rRule,jdbcType=INTEGER}, #{rDesc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ice.sh1.po.BonusRecord" useGeneratedKeys="true" keyProperty="id">
+    insert into t_bonus_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="rMember != null" >
+        r_member,
+      </if>
+      <if test="rMoney != null" >
+        r_money,
+      </if>
+      <if test="rPoint != null" >
+        r_point,
+      </if>
+      <if test="rTime != null" >
+        r_time,
+      </if>
+      <if test="rAddup != null" >
+        r_addup,
+      </if>
+      <if test="rRule != null" >
+        r_rule,
+      </if>
+      <if test="rDesc != null" >
+        r_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="rMember != null" >
+        #{rMember,jdbcType=INTEGER},
+      </if>
+      <if test="rMoney != null" >
+        #{rMoney,jdbcType=REAL},
+      </if>
+      <if test="rPoint != null" >
+        #{rPoint,jdbcType=VARCHAR},
+      </if>
+      <if test="rTime != null" >
+        #{rTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rAddup != null" >
+        #{rAddup,jdbcType=INTEGER},
+      </if>
+      <if test="rRule != null" >
+        #{rRule,jdbcType=INTEGER},
+      </if>
+      <if test="rDesc != null" >
+        #{rDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ice.sh1.po.BonusRecordExample" resultType="java.lang.Integer" >
+    select count(*) from t_bonus_record t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_bonus_record
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.rMember != null" >
+        r_member = #{record.rMember,jdbcType=INTEGER},
+      </if>
+      <if test="record.rMoney != null" >
+        r_money = #{record.rMoney,jdbcType=REAL},
+      </if>
+      <if test="record.rPoint != null" >
+        r_point = #{record.rPoint,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rTime != null" >
+        r_time = #{record.rTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.rAddup != null" >
+        r_addup = #{record.rAddup,jdbcType=INTEGER},
+      </if>
+      <if test="record.rRule != null" >
+        r_rule = #{record.rRule,jdbcType=INTEGER},
+      </if>
+      <if test="record.rDesc != null" >
+        r_desc = #{record.rDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_bonus_record
+    set id = #{record.id,jdbcType=INTEGER},
+      r_member = #{record.rMember,jdbcType=INTEGER},
+      r_money = #{record.rMoney,jdbcType=REAL},
+      r_point = #{record.rPoint,jdbcType=VARCHAR},
+      r_time = #{record.rTime,jdbcType=TIMESTAMP},
+      r_addup = #{record.rAddup,jdbcType=INTEGER},
+      r_rule = #{record.rRule,jdbcType=INTEGER},
+      r_desc = #{record.rDesc,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ice.sh1.po.BonusRecord" >
+    update t_bonus_record
+    <set >
+      <if test="rMember != null" >
+        r_member = #{rMember,jdbcType=INTEGER},
+      </if>
+      <if test="rMoney != null" >
+        r_money = #{rMoney,jdbcType=REAL},
+      </if>
+      <if test="rPoint != null" >
+        r_point = #{rPoint,jdbcType=VARCHAR},
+      </if>
+      <if test="rTime != null" >
+        r_time = #{rTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rAddup != null" >
+        r_addup = #{rAddup,jdbcType=INTEGER},
+      </if>
+      <if test="rRule != null" >
+        r_rule = #{rRule,jdbcType=INTEGER},
+      </if>
+      <if test="rDesc != null" >
+        r_desc = #{rDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ice.sh1.po.BonusRecord" >
+    update t_bonus_record
+    set r_member = #{rMember,jdbcType=INTEGER},
+      r_money = #{rMoney,jdbcType=REAL},
+      r_point = #{rPoint,jdbcType=VARCHAR},
+      r_time = #{rTime,jdbcType=TIMESTAMP},
+      r_addup = #{rAddup,jdbcType=INTEGER},
+      r_rule = #{rRule,jdbcType=INTEGER},
+      r_desc = #{rDesc,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

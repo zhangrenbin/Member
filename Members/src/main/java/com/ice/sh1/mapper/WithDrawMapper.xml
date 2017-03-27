@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ice.sh1.dao.WithDrawMapper" >
+  <resultMap id="BaseResultMap" type="com.ice.sh1.po.WithDraw" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="memb_id" property="membId" jdbcType="INTEGER" />
+    <result column="tx_date" property="txDate" jdbcType="TIMESTAMP" />
+    <result column="tx_money" property="txMoney" jdbcType="REAL" />
+    <result column="tx_b_account" property="txBAccount" jdbcType="VARCHAR" />
+    <result column="tx_bank" property="txBank" jdbcType="VARCHAR" />
+    <result column="tx_b_name" property="txBName" jdbcType="VARCHAR" />
+    <result column="tx_remark" property="txRemark" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="do_date" property="doDate" jdbcType="TIMESTAMP" />
+    <result column="do_msg" property="doMsg" jdbcType="VARCHAR" />
+    <result column="do_admin" property="doAdmin" jdbcType="VARCHAR" />
+    <result column="membAccount" property="membAccount" jdbcType="VARCHAR" />
+    <result column="membName" property="membName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and t.${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and t.${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and t.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and t.${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    t.id, memb_id, tx_date, tx_money, tx_b_account, tx_bank, tx_b_name, tx_remark, state, 
+    do_date, do_msg, do_admin,m.m_account membAccount,m.m_cnname membName
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ice.sh1.po.WithDrawExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_withdraw t join t_member m on t.memb_id=m.id
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="start != null">
+    	limit ${start}, ${size}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_withdraw t join t_member m on t.memb_id=m.id
+    where t.id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_withdraw
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ice.sh1.po.WithDrawExample" >
+    delete from t_withdraw
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ice.sh1.po.WithDraw" keyProperty="id" useGeneratedKeys="true">
+    insert into t_withdraw (id, memb_id, tx_date, 
+      tx_money, tx_b_account, tx_bank, 
+      tx_b_name, tx_remark, state, 
+      do_date, do_msg, do_admin
+      )
+    values (#{id,jdbcType=INTEGER}, #{membId,jdbcType=INTEGER}, #{txDate,jdbcType=TIMESTAMP}, 
+      #{txMoney,jdbcType=REAL}, #{txBAccount,jdbcType=VARCHAR}, #{txBank,jdbcType=VARCHAR}, 
+      #{txBName,jdbcType=VARCHAR}, #{txRemark,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
+      #{doDate,jdbcType=TIMESTAMP}, #{doMsg,jdbcType=VARCHAR}, #{doAdmin,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ice.sh1.po.WithDraw" keyProperty="id" useGeneratedKeys="true">
+    insert into t_withdraw
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="membId != null" >
+        memb_id,
+      </if>
+      <if test="txDate != null" >
+        tx_date,
+      </if>
+      <if test="txMoney != null" >
+        tx_money,
+      </if>
+      <if test="txBAccount != null" >
+        tx_b_account,
+      </if>
+      <if test="txBank != null" >
+        tx_bank,
+      </if>
+      <if test="txBName != null" >
+        tx_b_name,
+      </if>
+      <if test="txRemark != null" >
+        tx_remark,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="doDate != null" >
+        do_date,
+      </if>
+      <if test="doMsg != null" >
+        do_msg,
+      </if>
+      <if test="doAdmin != null" >
+        do_admin,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="membId != null" >
+        #{membId,jdbcType=INTEGER},
+      </if>
+      <if test="txDate != null" >
+        #{txDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="txMoney != null" >
+        #{txMoney,jdbcType=REAL},
+      </if>
+      <if test="txBAccount != null" >
+        #{txBAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="txBank != null" >
+        #{txBank,jdbcType=VARCHAR},
+      </if>
+      <if test="txBName != null" >
+        #{txBName,jdbcType=VARCHAR},
+      </if>
+      <if test="txRemark != null" >
+        #{txRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="doDate != null" >
+        #{doDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="doMsg != null" >
+        #{doMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="doAdmin != null" >
+        #{doAdmin,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ice.sh1.po.WithDrawExample" resultType="java.lang.Integer" >
+    select count(*) from t_withdraw t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_withdraw
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.membId != null" >
+        memb_id = #{record.membId,jdbcType=INTEGER},
+      </if>
+      <if test="record.txDate != null" >
+        tx_date = #{record.txDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.txMoney != null" >
+        tx_money = #{record.txMoney,jdbcType=REAL},
+      </if>
+      <if test="record.txBAccount != null" >
+        tx_b_account = #{record.txBAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.txBank != null" >
+        tx_bank = #{record.txBank,jdbcType=VARCHAR},
+      </if>
+      <if test="record.txBName != null" >
+        tx_b_name = #{record.txBName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.txRemark != null" >
+        tx_remark = #{record.txRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.state != null" >
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
+      <if test="record.doDate != null" >
+        do_date = #{record.doDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.doMsg != null" >
+        do_msg = #{record.doMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.doAdmin != null" >
+        do_admin = #{record.doAdmin,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_withdraw
+    set id = #{record.id,jdbcType=INTEGER},
+      memb_id = #{record.membId,jdbcType=INTEGER},
+      tx_date = #{record.txDate,jdbcType=TIMESTAMP},
+      tx_money = #{record.txMoney,jdbcType=REAL},
+      tx_b_account = #{record.txBAccount,jdbcType=VARCHAR},
+      tx_bank = #{record.txBank,jdbcType=VARCHAR},
+      tx_b_name = #{record.txBName,jdbcType=VARCHAR},
+      tx_remark = #{record.txRemark,jdbcType=VARCHAR},
+      state = #{record.state,jdbcType=INTEGER},
+      do_date = #{record.doDate,jdbcType=TIMESTAMP},
+      do_msg = #{record.doMsg,jdbcType=VARCHAR},
+      do_admin = #{record.doAdmin,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ice.sh1.po.WithDraw" >
+    update t_withdraw
+    <set >
+      <if test="membId != null" >
+        memb_id = #{membId,jdbcType=INTEGER},
+      </if>
+      <if test="txDate != null" >
+        tx_date = #{txDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="txMoney != null" >
+        tx_money = #{txMoney,jdbcType=REAL},
+      </if>
+      <if test="txBAccount != null" >
+        tx_b_account = #{txBAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="txBank != null" >
+        tx_bank = #{txBank,jdbcType=VARCHAR},
+      </if>
+      <if test="txBName != null" >
+        tx_b_name = #{txBName,jdbcType=VARCHAR},
+      </if>
+      <if test="txRemark != null" >
+        tx_remark = #{txRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="doDate != null" >
+        do_date = #{doDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="doMsg != null" >
+        do_msg = #{doMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="doAdmin != null" >
+        do_admin = #{doAdmin,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ice.sh1.po.WithDraw" >
+    update t_withdraw
+    set memb_id = #{membId,jdbcType=INTEGER},
+      tx_date = #{txDate,jdbcType=TIMESTAMP},
+      tx_money = #{txMoney,jdbcType=REAL},
+      tx_b_account = #{txBAccount,jdbcType=VARCHAR},
+      tx_bank = #{txBank,jdbcType=VARCHAR},
+      tx_b_name = #{txBName,jdbcType=VARCHAR},
+      tx_remark = #{txRemark,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      do_date = #{doDate,jdbcType=TIMESTAMP},
+      do_msg = #{doMsg,jdbcType=VARCHAR},
+      do_admin = #{doAdmin,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
